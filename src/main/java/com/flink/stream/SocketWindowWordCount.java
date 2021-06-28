@@ -2,7 +2,6 @@ package com.flink.stream;
 
 import com.flink.domain.WordWithCount;
 import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -47,15 +46,11 @@ public class SocketWindowWordCount {
                         }
                     }
                 })
+                // 按word分区
                 .keyBy("word")
-                .timeWindow(Time.seconds(5), Time.seconds(1))
-                .reduce(new ReduceFunction<WordWithCount>() {
-                    @Override
-                    public WordWithCount reduce(WordWithCount value1, WordWithCount value2) throws Exception {
-
-                        return new WordWithCount(value1.word, value1.count + value2.count);
-                    }
-                });
+                // 每隔10秒统计5分钟内的数据
+                .timeWindow(Time.minutes(5), Time.seconds(10))
+                .reduce((value1, value2) -> new WordWithCount(value1.word, value1.count + value2.count));
         windowCounts.print().setParallelism(1);
 
         env.execute("Socket Window WordCount");
