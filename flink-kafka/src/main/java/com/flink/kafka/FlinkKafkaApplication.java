@@ -1,13 +1,13 @@
-package com.flink;
+package com.flink.kafka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FlinkDemoApplication {
+public class FlinkKafkaApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(FlinkDemoApplication.class, args);
+        SpringApplication.run(FlinkKafkaApplication.class, args);
     }
 
 }

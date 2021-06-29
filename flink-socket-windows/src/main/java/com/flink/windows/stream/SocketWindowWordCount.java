@@ -1,6 +1,6 @@
-package com.flink.stream;
+package com.flink.windows.stream;
 
-import com.flink.domain.WordWithCount;
+import com.flink.windows.domain.WordWithCount;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;

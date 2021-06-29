@@ -1,4 +1,4 @@
-package com.flink.domain;
+package com.flink.windows.domain;
 
 /**
  * WordWithCount
