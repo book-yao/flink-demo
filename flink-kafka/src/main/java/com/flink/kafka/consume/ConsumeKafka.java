@@ -1,6 +1,5 @@
 package com.flink.kafka.consume;
 
-import com.flink.kafka.sink.HbaseSink;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -36,7 +35,6 @@ public class ConsumeKafka {
         final DataStream<Tuple2<String, Long>> resultStream = text.flatMap(new MyFlatMapFunction())
                 .keyBy((Tuple2<String, Long> tuple) -> tuple.f0)
                 .sum(1);
-        resultStream.addSink(new HbaseSink());
         resultStream.print().setParallelism(2);
 
         env.execute("consume kafka");
