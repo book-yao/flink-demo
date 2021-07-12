@@ -5,7 +5,6 @@ import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
 
 /**
@@ -19,9 +18,11 @@ public class SocketWindowWordCount {
     public static void main(String[] args) throws Exception {
         //连接端口号
         final int port;
+        final String host;
         try {
             final ParameterTool params = ParameterTool.fromArgs(args);
             port = params.getInt("port");
+            host = params.get("host");
         } catch (Exception e) {
             System.out.println("No port specified. Please run 'SocketWindowWordCount --port <port>'");
             return;
@@ -30,7 +31,7 @@ public class SocketWindowWordCount {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         //获取连接socket输入数据
-        DataStream<String> text = env.socketTextStream("127.0.0.1", port, "\n");
+        DataStream<String> text = env.socketTextStream(host, port, "\n");
 
         //解析数据、对数据进行分组、窗口函数和统计个数
 
@@ -41,15 +42,17 @@ public class SocketWindowWordCount {
                     @Override
                     public void flatMap(String value, Collector<WordWithCount> out) throws Exception {
                         // 切割空白字符
-                        for (String word : value.split("//s")) {
+                        for (String word : value.split(" ")) {
                             out.collect(new WordWithCount(word, 1));
                         }
                     }
                 })
                 // 按word分区
                 .keyBy("word")
+                // 定义 30 分钟超时的会话窗口
+//                .window(EventTimeSessionWindows.withGap(Time.minutes(30)))
                 // 每隔10秒统计5分钟内的数据
-                .timeWindow(Time.minutes(5), Time.seconds(10))
+//                .timeWindow(Time.minutes(5), Time.seconds(10))
                 .reduce((value1, value2) -> new WordWithCount(value1.word, value1.count + value2.count));
         windowCounts.print().setParallelism(1);
 
