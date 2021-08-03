@@ -8,9 +8,9 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>com.flink.windows</groupId>
-	<artifactId>flink-socket-windows</artifactId>
+	<artifactId>flink-windows</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>flink-socket-windows</name>
+	<name>flink-windows</name>
 	<packaging>jar</packaging>
 	<description>Demo project for Spring Boot</description>
 	<properties>

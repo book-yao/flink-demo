@@ -24,7 +24,7 @@
 
     <modules>
         <module>flink-kafka</module>
-        <module>flink-socket-windows</module>
+        <module>flink-windows</module>
         <module>flink-hbase</module>
     </modules>
     <dependencies>

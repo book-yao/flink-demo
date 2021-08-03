@@ -9,6 +9,7 @@ package com.flink.windows.domain;
 public class WordWithCount {
     public String word;
     public long count;
+    public long timestamp;
 
     public WordWithCount() {
     }
@@ -16,6 +17,12 @@ public class WordWithCount {
     public WordWithCount(String word, long count) {
         this.word = word;
         this.count = count;
+    }
+
+    public WordWithCount(String word, long count,long timestamp) {
+        this.word = word;
+        this.count = count;
+        this.timestamp = timestamp;
     }
 
     @Override
